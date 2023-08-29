@@ -1,3 +1,4 @@
+import 'package:expansion_panel/model/items.dart';
 import 'package:flutter/material.dart';
 
 class ExpansionPanell extends StatefulWidget {
@@ -7,9 +8,65 @@ class ExpansionPanell extends StatefulWidget {
   State<ExpansionPanell> createState() => _ExpansionPanellState();
 }
 
+final List<Item> _data = newPanel(1);
+
+//Örnek Veriler Oluştur.
+List<Item> newPanel(int numberItems) {
+  return List.generate(
+    numberItems,
+    (index) {
+      return Item(headerValue: 'Başlık ${index + 1}');
+    },
+  );
+}
+
 class _ExpansionPanellState extends State<ExpansionPanell> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expansion Panel List Kullanımı'),
+      ),
+      body: _data.isNotEmpty
+          ? SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                child: ExpansionPanelList(
+                  expansionCallback: (panelIndex, isExpanded) {
+                    setState(() {
+                      _data[panelIndex].isExpanded = !isExpanded;
+                    });
+                  },
+                  children: _data.map((Item item) {
+                    return ExpansionPanel(
+                      headerBuilder: (context, isExpanded) {
+                        return ListTile(
+                          title: Text(item.headerValue),
+                        );
+                      },
+                      body: ListTile(
+                        title: Text('Ad-Soyad'),
+                        trailing: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _data.remove(item);
+                            });
+                          },
+                          child: Icon(Icons.delete),
+                        ),
+                      ),
+                      isExpanded: item.isExpanded,
+                    );
+                  }).toList(),
+                ),
+              ),
+            )
+          : Center(
+              child: Text(
+                'Veri Yok',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ),
+    );
   }
 }
