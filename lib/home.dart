@@ -8,14 +8,14 @@ class ExpansionPanell extends StatefulWidget {
   State<ExpansionPanell> createState() => _ExpansionPanellState();
 }
 
-final List<Item> _data = newPanel(1);
+final List<Item> _data = newPanel(10);
 
 //Örnek Veriler Oluştur.
 List<Item> newPanel(int numberItems) {
   return List.generate(
     numberItems,
     (index) {
-      return Item(headerValue: 'Başlık ${index + 1}');
+      return Item(headerValue: 'Meslek');
     },
   );
 }
@@ -45,14 +45,14 @@ class _ExpansionPanellState extends State<ExpansionPanell> {
                         );
                       },
                       body: ListTile(
-                        title: Text('Ad-Soyad'),
+                        title: const Text('Flutter Developer'),
                         trailing: GestureDetector(
                           onTap: () {
                             setState(() {
                               _data.remove(item);
                             });
                           },
-                          child: Icon(Icons.delete),
+                          child: const Icon(Icons.delete),
                         ),
                       ),
                       isExpanded: item.isExpanded,
