@@ -8,14 +8,22 @@ class ExpansionPanell extends StatefulWidget {
   State<ExpansionPanell> createState() => _ExpansionPanellState();
 }
 
-final List<Item> _data = newPanel(10);
+final List<Item> _data = newPanel(_sorular.length);
+final List<String> _sorular = [
+  'Ad Soyad',
+  'Meslek',
+  'Doğum Tarihi',
+  'E-mail',
+  'Cep Telefonu',
+  'Cinsyet'
+];
 
 //Örnek Veriler Oluştur.
 List<Item> newPanel(int numberItems) {
   return List.generate(
     numberItems,
     (index) {
-      return Item(headerValue: 'Meslek');
+      return Item(headerValue: '${_sorular[index]}');
     },
   );
 }
@@ -37,27 +45,29 @@ class _ExpansionPanellState extends State<ExpansionPanell> {
                       _data[panelIndex].isExpanded = !isExpanded;
                     });
                   },
-                  children: _data.map((Item item) {
-                    return ExpansionPanel(
-                      headerBuilder: (context, isExpanded) {
-                        return ListTile(
-                          title: Text(item.headerValue),
-                        );
-                      },
-                      body: ListTile(
-                        title: const Text('Flutter Developer'),
-                        trailing: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _data.remove(item);
-                            });
-                          },
-                          child: const Icon(Icons.delete),
+                  children: _data.map(
+                    (Item item) {
+                      return ExpansionPanel(
+                        headerBuilder: (context, isExpanded) {
+                          return ListTile(
+                            title: Text(item.headerValue),
+                          );
+                        },
+                        body: ListTile(
+                          title: const Text('Flutter Developer'),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _data.remove(item);
+                              });
+                            },
+                            child: const Icon(Icons.delete),
+                          ),
                         ),
-                      ),
-                      isExpanded: item.isExpanded,
-                    );
-                  }).toList(),
+                        isExpanded: item.isExpanded,
+                      );
+                    },
+                  ).toList(),
                 ),
               ),
             )
